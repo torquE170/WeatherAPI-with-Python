@@ -1,6 +1,4 @@
 from pprint import pprint
-from typing import Callable
-
 import requests
 import api_keys  # create your api_keys file and create appropriate variables with the API key from your account
 from datetime import datetime
