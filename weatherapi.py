@@ -2,7 +2,14 @@ from pprint import pprint
 import requests
 import api_keys  # create your api_keys file and create appropriate variables with the API key from your account
 from datetime import datetime
+import os
+import sys
 
+def clear():
+    if "win" in sys.platform:
+        os.system("cls")
+    elif "linux" in sys.platform:
+        os.system("clear")
 
 url = f"https://api.weatherapi.com/v1/forecast.json"
 # current.json - for current weather
@@ -31,8 +38,9 @@ body = {
     ]
 }
 
-print("Weather from https://www.weatherapi.com")
+clear()
 query_made = False
+wrong_option = False
 option = -1
 while option != 0:
     if query_made:
@@ -46,14 +54,20 @@ while option != 0:
             option_2 = f"2 - Forecast for the day"
     else:
         option_2 = "2 - Forecast for - no query has been made"
+    print("Weather from https://www.weatherapi.com")
     print(option_1)
     print(option_2)
     print("3 - Make a new query")
     print()
     print("0 - Exit")
+    if wrong_option:
+        print(">>")
+        print(">> Enter a valid menu option")
+        wrong_option = False
     while True:
         try:
             option = int(input(">> "))
+            clear()
             break
         except ValueError:
             print(">> Enter a valid number")
@@ -89,13 +103,14 @@ while option != 0:
                       f"{f", Precipitation: {forcast_list[day]['hour'][hour]['precip_mm']}mm" if forcast_list[day]['hour'][hour]['precip_mm'] != 0 else ""} ")
             print()
             option_days = input("(Next/Previous/Quit) >> ")
-            if option_days.lower() == 'n':
+            clear()
+            if option_days.lower() == 'n' or option_days.lower() == 'next':
                 if day < len(forcast_list) - 1:
                     day += 1
-            if option_days.lower() == 'p':
+            if option_days.lower() == 'p' or option_days.lower() == 'previous':
                 if day > 0:
                     day -= 1
-            if option_days.lower() == 'q':
+            if option_days.lower() == 'q' or option_days.lower() == 'quit':
                 break
         print()
     elif option == 3:
@@ -133,11 +148,10 @@ while option != 0:
         # print(url_with_param)
         response = requests.post(url_with_param, headers=headers)
         # pprint(response.json())
-        print()
+        clear()
 
     elif option == 0:
         break
 
     else:
-        print(">> Enter a valid menu option")
-        print()
+        wrong_option = True
