@@ -1,7 +1,7 @@
-from datetime import datetime
 from pprint import pprint
 import requests
 import api_keys  # create your api_keys file and create appropriate variables with the API key from your account
+from datetime import datetime
 
 
 url = f"https://api.weatherapi.com/v1/forecast.json"
@@ -67,8 +67,8 @@ while option != 0:
         for day in response.json()['forecast']['forecastday']:
             this_date = day['date']
             year, month, day_number = this_date.split("-")
-            datetime(int(year), int(month), int(day_number))
-            day_string = datetime.today().strftime("%A")
+            said_date = datetime.strptime(f"{year}{month}{day_number}", "%Y%m%d").date()
+            day_string = said_date.strftime("%A")
             print(f"Location: {response.json()['location']['country']}, {response.json()['location']['name']}, {response.json()['location']['region']}")
             print(f"Date: {day['date']}, {day_string}, Average humidity: {day['day']['avghumidity']}"
                   f"{f", Precipitation: {day['day']['totalprecip_mm']}mm" if day['day']['totalprecip_mm'] != 0 else ""}")
