@@ -1,0 +1,7 @@
+# ignore file I stored keys in
+api_keys.py
+
+# ignore other files or folders
+__pychahe__/
+.idea/
+.venv/
