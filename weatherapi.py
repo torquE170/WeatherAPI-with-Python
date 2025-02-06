@@ -1,4 +1,6 @@
 from pprint import pprint
+from typing import Callable
+
 import requests
 import api_keys  # create your api_keys file and create appropriate variables with the API key from your account
 from datetime import datetime
@@ -51,7 +53,13 @@ while option != 0:
     print("3 - Make a new query")
     print()
     print("0 - Exit")
-    option = int(input(">> "))
+    while True:
+        try:
+            option = int(input(">> "))
+            break
+        except ValueError:
+            print(">> Enter a valid number")
+            continue
     if option == 1:
         if not query_made:
             continue
@@ -82,13 +90,22 @@ while option != 0:
             print()
         print()
     elif option == 3:
-        q_param = input("Enter your town: ")
-        while True:
-            try:
-                days = int(input("Forecast days: "))
+        valid_entry = False
+        while not valid_entry:
+            q_param = input("Enter your town: ")
+            if q_param.strip() != "":
                 break
-            except ValueError:
-                continue
+
+        valid_entry = False
+        while not valid_entry:
+            days = input("Forecast days: ")
+            if days.isnumeric():
+                days = int(days)
+                valid_entry = True
+            elif days.strip() == "":
+                days = ""
+                valid_entry = True
+            break
 
         if q_param != "":
             q_param = f"q={q_param.lower()}"
@@ -113,3 +130,7 @@ while option != 0:
 
     elif option == 0:
         break
+
+    else:
+        print(">> Enter a valid menu option")
+        print()
