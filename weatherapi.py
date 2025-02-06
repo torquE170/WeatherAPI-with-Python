@@ -1,6 +1,7 @@
+from datetime import datetime
 from pprint import pprint
 import requests
-import api_keys  # create your api_keys file and create apropriate variabiles with the API key from your account
+import api_keys  # create your api_keys file and create appropriate variables with the API key from your account
 
 
 url = f"https://api.weatherapi.com/v1/forecast.json"
@@ -64,8 +65,12 @@ while option != 0:
         if not query_made:
             continue
         for day in response.json()['forecast']['forecastday']:
+            this_date = day['date']
+            year, month, day_number = this_date.split("-")
+            datetime(int(year), int(month), int(day_number))
+            day_string = datetime.today().strftime("%A")
             print(f"Location: {response.json()['location']['country']}, {response.json()['location']['name']}, {response.json()['location']['region']}")
-            print(f"Date: {day['date']}, Average humidity: {day['day']['avghumidity']}"
+            print(f"Date: {day['date']}, {day_string}, Average humidity: {day['day']['avghumidity']}"
                   f"{f", Precipitation: {day['day']['totalprecip_mm']}mm" if day['day']['totalprecip_mm'] != 0 else ""}")
             print(f"Sunrise: {day['astro']['sunrise']}, Sunset: {day['astro']['sunset']}")
             for hour in range(len(day['hour'])):
@@ -104,57 +109,7 @@ while option != 0:
         # print(url_with_param)
         response = requests.post(url_with_param, headers=headers)
         # pprint(response.json())
+        print()
 
     elif option == 0:
         break
-
-
-#  ------------------------ current weather data -----------------------------
-#  json['current']['condition']['text'] - text condition for current weather
-#  json['current']['feelslike_c'] - feels like temp
-#  json['current']['temp_c'] - temp
-#  json['current']['wind_kph'] - wind speed
-#  json['current']['wind_dir'] - wind direction
-#  json['current']['wind_degree'] - exact wind direction
-#  json['current']['pressure_mb'] - barometric pressure
-#  json['current']['humidity'] - barometric pressure
-#  json['current']['precip_mm'] - precipitation in mm
-
-#  ---------------------------- location data ----------------------------------
-#  json['location']['country']
-#  json['location']['localtime']
-#  json['location']['tz_id']
-#  json['location']['name']
-#  json['location']['region']
-
-#  ------------------------ forecast weather data ------------------------------
-#  json['forecast']['forecastday'][0-7]['date'] - date of forecast
-#         dict      list of dict   day
-#  json['forecast']['forecastday'][0-7]['day'] - forecast for the whole day
-#  json['forecast']['forecastday'][0-7]['day']['mintemp_c']
-#  json['forecast']['forecastday'][0-7]['day']['avgtemp_c']
-#  json['forecast']['forecastday'][0-7]['day']['maxtemp_c']
-#  json['forecast']['forecastday'][0-7]['day']['totalprecip_mm']
-#  json['forecast']['forecastday'][0-7]['day']['daily_chance_of_rain']
-#  json['forecast']['forecastday'][0-7]['day']['daily_chance_of_snow']
-#  json['forecast']['forecastday'][0-7]['day']['avgvis_km']
-#  json['forecast']['forecastday'][0-7]['day']['avghumidity']
-#  json['forecast']['forecastday'][0-7]['day']['uv']
-#  json['forecast']['forecastday'][0-7]['day']['condition']['text']
-#
-#  json['forecast']['forecastday'][0-7]['astro']['sunrise']
-#  json['forecast']['forecastday'][0-7]['astro']['sunset']
-#  json['forecast']['forecastday'][0-7]['astro']['moonrise']
-#  json['forecast']['forecastday'][0-7]['astro']['moonset']
-#  json['forecast']['forecastday'][0-7]['astro']['moon_phase']
-#
-#  ------------------------ hourly forecast weather data -----------------------
-#  json['forecast']['forecastday'][0-7]['hour'][0-23]['temp_c']
-#         dict      list of dict   day   list   hour
-#  json['forecast']['forecastday'][0-7]['hour'][0-23]['wind_kph']
-#  json['forecast']['forecastday'][0-7]['hour'][0-23]['pressure_mb']
-#  json['forecast']['forecastday'][0-7]['hour'][0-23]['chance_of_rain']
-#  json['forecast']['forecastday'][0-7]['hour'][0-23]['chance_of_snow']
-#  json['forecast']['forecastday'][0-7]['hour'][0-23]['precip_mm']
-#  json['forecast']['forecastday'][0-7]['hour'][0-23]['humidity']
-#  json['forecast']['forecastday'][0-7]['hour'][0-23]['uv']
