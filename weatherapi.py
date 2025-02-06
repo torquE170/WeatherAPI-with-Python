@@ -77,8 +77,8 @@ while option != 0:
             continue
         print(f"Location: {response.json()['location']['country']}, {response.json()['location']['name']}, {response.json()['location']['region']}")
         print(f"Right now is {response.json()['current']['condition']['text']}, and it feels like {response.json()['current']['feelslike_c']}ºC")
-        print(f"Temperature: {response.json()['current']['temp_c']}ºC, Humidity: {response.json()['current']['humidity']}RH"
-              f"{f", Precipitation: {response.json()['current']['precip_mm']}mm" if response.json()['current']['precip_mm'] != 0 else ""}")
+        print(f"Temperature: {response.json()['current']['temp_c']}ºC, Humidity: {response.json()['current']['humidity']}RH", end = "")
+        print(f", Precipitation: {response.json()['current']['precip_mm']}mm" if response.json()['current']['precip_mm'] != 0 else "")
         print(f"Wind speed: {response.json()['current']['wind_kph']}km/h, Wind direction: {response.json()['current']['wind_dir']}, {response.json()['current']['wind_degree']}º")
         print()
     elif option == 2:
@@ -92,15 +92,15 @@ while option != 0:
             said_date = datetime.strptime(f"{year}{month}{day_number}", "%Y%m%d").date()
             day_string = said_date.strftime("%A")
             print(f"Location: {response.json()['location']['country']}, {response.json()['location']['name']}, {response.json()['location']['region']}")
-            print(f"Date: {forcast_list[day]['date']}, {day_string}, Average humidity: {forcast_list[day]['day']['avghumidity']}"
-                  f"{f", Precipitation: {forcast_list[day]['day']['totalprecip_mm']}mm" if forcast_list[day]['day']['totalprecip_mm'] != 0 else ""}")
+            print(f"Date: {forcast_list[day]['date']}, {day_string}, Average humidity: {forcast_list[day]['day']['avghumidity']}", end="")
+            print(f", Precipitation: {forcast_list[day]['day']['totalprecip_mm']}mm" if forcast_list[day]['day']['totalprecip_mm'] != 0 else "")
             print(f"Sunrise: {forcast_list[day]['astro']['sunrise']}, Sunset: {forcast_list[day]['astro']['sunset']}")
             for hour in range(len(forcast_list[day]['hour'])):
                 print(f"[{hour:>02}:00] Temp: {forcast_list[day]['hour'][hour]['temp_c']:>5.1f}ºC "
                       f"Wind: {forcast_list[day]['hour'][hour]['wind_kph']:>5.1f}km/h - "
                       f"{forcast_list[day]['hour'][hour]['wind_dir']:>4s}, "
-                      f"Humidity: {forcast_list[day]['hour'][hour]['humidity']:>3}"
-                      f"{f", Precipitation: {forcast_list[day]['hour'][hour]['precip_mm']}mm" if forcast_list[day]['hour'][hour]['precip_mm'] != 0 else ""} ")
+                      f"Humidity: {forcast_list[day]['hour'][hour]['humidity']:>3}", end="")
+                print(f", Precipitation: {forcast_list[day]['hour'][hour]['precip_mm']}mm" if forcast_list[day]['hour'][hour]['precip_mm'] != 0 else "")
             print()
             option_days = input("(Next/Previous/Quit) >> ")
             clear()
@@ -140,9 +140,9 @@ while option != 0:
 
         if q_param != "":
             q_param = f"q={q_param.lower()}"
-
-        url_with_param = (url + f"{"?" if days_param != "" or q_param != "" else ""}" +
-                          q_param + f"{"&" if days_param != "" else ""}" + days_param)
+        question_mark = "?" if days_param != "" or q_param != "" else ""
+        ampercent = "&" if days_param != "" else ""
+        url_with_param = url + question_mark + q_param + ampercent + days_param
 
         query_made = True
         # print(url_with_param)
