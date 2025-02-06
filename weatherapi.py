@@ -108,10 +108,11 @@ while option != 0:
         if q_param != "":
             q_param = f"q={q_param.lower()}"
 
-        if int(days) > 7:
-            days = "7"
-        elif int(days) < 2:
-            days = ""
+        if days.isnumeric():
+            if int(days) > 7:
+                days = "7"
+            elif int(days) < 2:
+                days = ""
         if days == "":
             days_param = ""
         else:
