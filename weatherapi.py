@@ -130,7 +130,7 @@ while option != 0:
                 elif days < 2:
                     days = ""
                 days = str(days)
-                valid_entry = True
+                valid_entry = True 
             elif days.strip() == "":
                 days = ""
                 valid_entry = True
